@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-enum NetworkRequestError: LocalizedError, Equatable {
+enum pkNetworkRequestError: LocalizedError, Equatable {
     case invalidRequest
     case badRequest
     case unauthorized
@@ -22,7 +22,7 @@ enum NetworkRequestError: LocalizedError, Equatable {
     case unknownError
 }
 
-struct NetworkDispatcher {
+struct pkNetworkDispatcher {
     let urlSession: URLSession!
     public init(urlSession: URLSession = .shared) {
         self.urlSession = urlSession
@@ -30,7 +30,7 @@ struct NetworkDispatcher {
     /// Dispatches an URLRequest and returns a publisher
     /// - Parameter request: URLRequest
     /// - Returns: A publisher with the provided decoded data or an error
-    func dispatch<ReturnType: Codable>(request: URLRequest) -> AnyPublisher<ReturnType, NetworkRequestError> {
+    func dispatch<ReturnType: Codable>(request: URLRequest) -> AnyPublisher<ReturnType, pkNetworkRequestError> {
         
         // Date formatting
         let decoder = JSONDecoder()
@@ -61,11 +61,11 @@ struct NetworkDispatcher {
     }
 }
 
-extension NetworkDispatcher {
+extension pkNetworkDispatcher {
 /// Parses a HTTP StatusCode and returns a proper error
     /// - Parameter statusCode: HTTP status code
     /// - Returns: Mapped Error
-    private func httpError(_ statusCode: Int) -> NetworkRequestError {
+    private func httpError(_ statusCode: Int) -> pkNetworkRequestError {
         switch statusCode {
         case 400: return .badRequest
         case 401: return .unauthorized
@@ -80,13 +80,13 @@ extension NetworkDispatcher {
     /// Parses URLSession Publisher errors and return proper ones
     /// - Parameter error: URLSession publisher error
     /// - Returns: Readable NetworkRequestError
-    private func handleError(_ error: Error) -> NetworkRequestError {
+    private func handleError(_ error: Error) -> pkNetworkRequestError {
         switch error {
         case is Swift.DecodingError:
             return .decodingError
         case let urlError as URLError:
             return .urlSessionFailed(urlError)
-        case let error as NetworkRequestError:
+        case let error as pkNetworkRequestError:
             return error
         default:
             return .unknownError
