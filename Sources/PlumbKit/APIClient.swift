@@ -21,7 +21,7 @@ struct PlumbAPIClient {
     /// Dispatches a Request and returns a publisher
         /// - Parameter request: Request to Dispatch
         /// - Returns: A publisher containing decoded data or an error
-    func dispatch<R: pkRequest>(_ request: R) -> AnyPublisher<R.ReturnType, PlumbNetworkRequestError> {
+    func dispatch<R: PlumbRequest>(_ request: R) -> AnyPublisher<R.ReturnType, PlumbNetworkRequestError> {
         guard let urlRequest = request.asURLRequest(baseURL: baseURL) else {
             return Fail(outputType: R.ReturnType.self, failure: PlumbNetworkRequestError.badRequest)
                 .eraseToAnyPublisher()

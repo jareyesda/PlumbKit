@@ -14,7 +14,7 @@ public enum HTTPMethod: String {
     case DELETE  = "DELETE"
 }
 
-public protocol pkRequest {
+public protocol PlumbRequest {
     var path: String { get }
     var method: HTTPMethod { get }
     var contentType: String { get }
@@ -24,7 +24,7 @@ public protocol pkRequest {
     associatedtype ReturnType: Codable
 }
  
-extension pkRequest {
+extension PlumbRequest {
     // Defaults
     var method: HTTPMethod { return .GET }
     var contentType: String { return "application/json" }
@@ -34,7 +34,7 @@ extension pkRequest {
     var queryItems: [String: String]? { return nil }
 }
 
-extension pkRequest {
+extension PlumbRequest {
     
     private func requestBodyFrom(params: [String: Any]?) -> Data? {
         guard let params = params else {
