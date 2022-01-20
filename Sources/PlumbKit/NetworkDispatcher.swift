@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-enum pkNetworkRequestError: LocalizedError, Equatable {
+enum PlumbNetworkRequestError: LocalizedError, Equatable {
     case invalidRequest
     case badRequest
     case unauthorized
@@ -30,7 +30,7 @@ struct pkNetworkDispatcher {
     /// Dispatches an URLRequest and returns a publisher
     /// - Parameter request: URLRequest
     /// - Returns: A publisher with the provided decoded data or an error
-    func dispatch<ReturnType: Codable>(request: URLRequest) -> AnyPublisher<ReturnType, pkNetworkRequestError> {
+    func dispatch<ReturnType: Codable>(request: URLRequest) -> AnyPublisher<ReturnType, PlumbNetworkRequestError> {
         
         // Date formatting
         let decoder = JSONDecoder()
@@ -65,7 +65,7 @@ extension pkNetworkDispatcher {
 /// Parses a HTTP StatusCode and returns a proper error
     /// - Parameter statusCode: HTTP status code
     /// - Returns: Mapped Error
-    private func httpError(_ statusCode: Int) -> pkNetworkRequestError {
+    private func httpError(_ statusCode: Int) -> PlumbNetworkRequestError {
         switch statusCode {
         case 400: return .badRequest
         case 401: return .unauthorized
@@ -80,13 +80,13 @@ extension pkNetworkDispatcher {
     /// Parses URLSession Publisher errors and return proper ones
     /// - Parameter error: URLSession publisher error
     /// - Returns: Readable NetworkRequestError
-    private func handleError(_ error: Error) -> pkNetworkRequestError {
+    private func handleError(_ error: Error) -> PlumbNetworkRequestError {
         switch error {
         case is Swift.DecodingError:
             return .decodingError
         case let urlError as URLError:
             return .urlSessionFailed(urlError)
-        case let error as pkNetworkRequestError:
+        case let error as PlumbNetworkRequestError:
             return error
         default:
             return .unknownError

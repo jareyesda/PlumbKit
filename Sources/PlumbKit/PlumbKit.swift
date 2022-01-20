@@ -1,5 +1,5 @@
 public struct PlumbKit {
-    public private(set) var text = "Hello, World!"
+    public private(set) var text = "PlumbKit Active 💧"
 
     public init() {
     }

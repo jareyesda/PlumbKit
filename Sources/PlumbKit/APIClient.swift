@@ -8,14 +8,12 @@
 import Foundation
 import Combine
 
-struct pkAPIClient {
+struct PlumbAPIClient {
     
-    static let shared = pkAPIClient()
-  
     var baseURL: String!
     var networkDispatcher: pkNetworkDispatcher!
     
-    init(baseURL: String = "https://dev-lockheed.inspiringapps.com", networkDispatcher: pkNetworkDispatcher = pkNetworkDispatcher()) {
+    init(baseURL: String, networkDispatcher: pkNetworkDispatcher = pkNetworkDispatcher()) {
         self.baseURL = baseURL
         self.networkDispatcher = networkDispatcher
     }
@@ -23,13 +21,13 @@ struct pkAPIClient {
     /// Dispatches a Request and returns a publisher
         /// - Parameter request: Request to Dispatch
         /// - Returns: A publisher containing decoded data or an error
-    func dispatch<R: pkRequest>(_ request: R) -> AnyPublisher<R.ReturnType, pkNetworkRequestError> {
+    func dispatch<R: pkRequest>(_ request: R) -> AnyPublisher<R.ReturnType, PlumbNetworkRequestError> {
         guard let urlRequest = request.asURLRequest(baseURL: baseURL) else {
-            return Fail(outputType: R.ReturnType.self, failure: pkNetworkRequestError.badRequest)
+            return Fail(outputType: R.ReturnType.self, failure: PlumbNetworkRequestError.badRequest)
                 .eraseToAnyPublisher()
         }
         
-        typealias RequestPublisher = AnyPublisher<R.ReturnType, pkNetworkRequestError>
+        typealias RequestPublisher = AnyPublisher<R.ReturnType, PlumbNetworkRequestError>
         
         let requestPublisher: RequestPublisher = networkDispatcher.dispatch(request: urlRequest)
         
