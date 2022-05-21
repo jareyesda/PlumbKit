@@ -13,7 +13,7 @@ PlumbKit was designed to be very easy to use, and allows the developer to perfor
 
 1. Create a request that conforms to the `PlumbRequest` protocol
 
-```
+```swift
 struct GetTodo: PlumbRequest {
    typealias ReturnType = Todo
    var path: String = "/Todo"
@@ -22,7 +22,7 @@ struct GetTodo: PlumbRequest {
 ```
 2. Create a data manager class
 
-```
+```swift
 import Combine
 
 class TodoManager {
@@ -56,7 +56,7 @@ class TodoManager {
 ### Example using `.GET` with query parameters
 In the following example, we are going to create a struct for the same `.GET` request as above but with pagination parameters:
 
-```
+```swift
 struct GetTodos: PlumbRequest {
    typealias ReturnType = Todos
    var path: String = "/Todos"
@@ -74,7 +74,7 @@ struct GetTodos: PlumbRequest {
 }
 ```
 ### Example `.POST` request
-```
+```swift
 struct CreateTodo: PlumbRequest {
    typealias ReturnType = CreateTodoResponse
    var path: String = "/Todo/Create"
@@ -87,7 +87,7 @@ struct CreateTodo: PlumbRequest {
 ```
 ### Current `PlumbRequest` Defaults
 The following are the defaults for `PlumbRequest`
-```
+```swift
 extension PlumbRequest {
     // Defaults
     var method: HTTPMethod { return .GET }
